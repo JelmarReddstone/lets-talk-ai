@@ -1,0 +1,24 @@
+{
+    "name": "reddstone/agentready",
+    "description": "Make your website AI-agent friendly. Drop-in PHP toolkit for llms.txt, structured data, and clean content endpoints.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AgentReady\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "keywords": [
+        "ai",
+        "seo",
+        "llms-txt",
+        "schema-org",
+        "crawlers",
+        "agents",
+        "structured-data",
+        "wordpress"
+    ]
+}

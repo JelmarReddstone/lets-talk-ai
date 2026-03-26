@@ -1,0 +1,75 @@
+{
+    "site": {
+        "name": "Your Site Name",
+        "url": "https://example.com",
+        "description": "Brief description of what your site offers",
+        "language": "en",
+        "contact_email": "",
+        "contact_phone": ""
+    },
+
+    "content_types": {
+        "listings": {
+            "label": "Listings",
+            "path_pattern": "/listings/*",
+            "schema_type": "RealEstateListing",
+            "description": "Property listings available for sale or rent"
+        },
+        "pages": {
+            "label": "Pages",
+            "path_pattern": "/*",
+            "schema_type": "WebPage",
+            "description": "General pages"
+        }
+    },
+
+    "llms_txt": {
+        "enabled": true,
+        "sections": {
+            "about": "Describe your site purpose and audience here.",
+            "topics": [
+                "Real estate listings",
+                "Property search",
+                "Housing market information"
+            ],
+            "capabilities": [
+                "Browse property listings with detailed specifications",
+                "Filter by price, location, bedrooms, and property type",
+                "View property photos and floor plans"
+            ]
+        }
+    },
+
+    "structured_data": {
+        "enabled": true,
+        "organization": {
+            "name": "Your Company",
+            "logo": "https://example.com/logo.png",
+            "url": "https://example.com"
+        }
+    },
+
+    "agent_endpoint": {
+        "enabled": true,
+        "param": "agentready",
+        "accept_headers": [
+            "text/markdown",
+            "application/agent+json"
+        ]
+    },
+
+    "content_feed": {
+        "enabled": true,
+        "path": "/agentready-feed.json",
+        "max_items": 1000
+    },
+
+    "content_selectors": {
+        "title": "h1, .page-title, .entry-title",
+        "main_content": "main, article, .content, .entry-content, #content",
+        "exclude": "nav, footer, header, .sidebar, .menu, .cookie-notice, script, style, .advertisement, .social-share, .comments",
+        "metadata": ".property-details, .listing-meta, .price, .specs"
+    },
+
+    "custom_properties": {}
+}

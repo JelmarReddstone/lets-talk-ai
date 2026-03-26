@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgentReady — Make Your Website AI-Agent Friendly</title>
+    <style>
+        :root {
+            --color-bg: #0a0a0f;
+            --color-surface: #12121a;
+            --color-surface-2: #1a1a26;
+            --color-border: #2a2a3a;
+            --color-text: #e4e4ed;
+            --color-text-dim: #8888a0;
+            --color-accent: #6c5ce7;
+            --color-accent-glow: rgba(108, 92, 231, 0.15);
+            --color-green: #00d2a0;
+            --color-green-glow: rgba(0, 210, 160, 0.12);
+            --color-orange: #f39c12;
+            --color-red: #e74c5f;
+            --radius: 12px;
+            --font-mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── Hero ─────────────────────────────────────── */
+        .hero {
+            position: relative;
+            padding: 100px 20px 80px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--color-accent);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--color-text-dim);
+            max-width: 640px;
+            margin: 0 auto 40px;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: var(--color-accent);
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.35);
+        }
+
+        /* ── Comparison ───────────────────────────────── */
+        .comparison {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .comparison h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .comparison > p {
+            text-align: center;
+            color: var(--color-text-dim);
+            max-width: 600px;
+            margin: 0 auto 48px;
+        }
+
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 0;
+            align-items: start;
+        }
+
+        .compare-box {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 32px;
+        }
+
+        .compare-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .compare-box.old h3 { color: var(--color-red); }
+        .compare-box.new h3 { color: var(--color-green); }
+
+        .compare-vs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-text-dim);
+            padding-top: 36px;
+        }
+
+        .compare-box pre {
+            background: var(--color-bg);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: var(--color-text-dim);
+            white-space: pre;
+        }
+
+        .compare-box.new pre {
+            color: var(--color-green);
+            border: 1px solid rgba(0, 210, 160, 0.15);
+        }
+
+        .compare-box.old pre {
+            color: var(--color-text-dim);
+            opacity: 0.7;
+        }
+
+        /* ── Section ──────────────────────────────────── */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .section > p {
+            color: var(--color-text-dim);
+            max-width: 640px;
+            margin-bottom: 48px;
+        }
+
+        .section.centered { text-align: center; }
+        .section.centered > p { margin-left: auto; margin-right: auto; }
+
+        /* ── Feature Cards ────────────────────────────── */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-3px);
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 18px;
+            background: var(--color-accent-glow);
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.92rem;
+            color: var(--color-text-dim);
+            line-height: 1.7;
+        }
+
+        /* ── How it works ─────────────────────────────── */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            counter-reset: step;
+        }
+
+        .step {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 32px;
+            position: relative;
+            counter-increment: step;
+        }
+
+        .step::before {
+            content: counter(step);
+            position: absolute;
+            top: -14px;
+            left: 24px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--color-accent);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 0.88rem;
+            color: var(--color-text-dim);
+        }
+
+        /* ── Agent List ───────────────────────────────── */
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .agent-tag {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: var(--font-mono);
+            transition: border-color 0.2s;
+        }
+
+        .agent-tag:hover { border-color: var(--color-accent); }
+
+        .agent-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .agent-dot.ai { background: var(--color-green); box-shadow: 0 0 6px var(--color-green); }
+        .agent-dot.search { background: var(--color-orange); box-shadow: 0 0 6px var(--color-orange); }
+        .agent-dot.scraper { background: var(--color-accent); box-shadow: 0 0 6px var(--color-accent); }
+
+        /* ── Code Block ───────────────────────────────── */
+        .code-block {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-top: 32px;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            background: var(--color-surface-2);
+            border-bottom: 1px solid var(--color-border);
+            font-size: 13px;
+            color: var(--color-text-dim);
+        }
+
+        .code-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .code-header .dot:nth-child(1) { background: #ff5f57; }
+        .code-header .dot:nth-child(2) { background: #ffbd2e; }
+        .code-header .dot:nth-child(3) { background: #28ca41; }
+
+        .code-header span { margin-left: 4px; }
+
+        .code-block pre {
+            padding: 24px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            color: var(--color-text);
+        }
+
+        .code-block .kw { color: var(--color-accent); }
+        .code-block .str { color: var(--color-green); }
+        .code-block .cmt { color: #555570; }
+        .code-block .fn { color: #f39c12; }
+
+        /* ── Benefits grid ────────────────────────────── */
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+
+        .benefit h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .benefit p {
+            font-size: 0.88rem;
+            color: var(--color-text-dim);
+        }
+
+        /* ── Architecture ─────────────────────────────── */
+        .arch-diagram {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 2.4;
+            color: var(--color-text-dim);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .arch-diagram .hl { color: var(--color-accent); font-weight: 600; }
+        .arch-diagram .gr { color: var(--color-green); font-weight: 600; }
+        .arch-diagram .or { color: var(--color-orange); font-weight: 600; }
+
+        /* ── Footer ───────────────────────────────────── */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-dim);
+            font-size: 14px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        footer a { color: var(--color-accent); text-decoration: none; }
+
+        /* ── Responsive ───────────────────────────────── */
+        @media (max-width: 768px) {
+            .compare-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .compare-vs {
+                padding: 0;
+                font-size: 12px;
+            }
+            .hero { padding: 60px 16px 40px; }
+            .section { padding: 48px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ━━ HERO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="hero">
+    <div class="hero-badge">⚡ Open Source PHP Toolkit</div>
+    <h1>Your website, ready for<br><span>the AI-agent era</span></h1>
+    <p class="hero-sub">
+        AgentReady is a drop-in PHP toolkit that makes your website optimally readable for AI crawlers and autonomous agents — so when users ask their AI assistant to find a product, property, or service, <strong>your site gets recommended first</strong>.
+    </p>
+    <a href="#how-it-works" class="hero-cta">See How It Works ↓</a>
+</section>
+
+<!-- ━━ THE PROBLEM ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section centered">
+    <h2>The Web Is Changing</h2>
+    <p>
+        People are no longer browsing sites. They ask their AI agent: <em>"Find me a 3-bedroom house in Amsterdam under €500k."</em> The agent crawls dozens of sites, extracts data, and recommends the best results. The question is: <strong>will your site be one of them?</strong>
+    </p>
+</section>
+
+<!-- ━━ BEFORE / AFTER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="comparison">
+    <h2>What AI Agents See Today vs. With AgentReady</h2>
+    <p>Without AgentReady, agents wade through bloated DOM soup. With it, they get exactly what they need.</p>
+
+    <div class="compare-grid">
+        <div class="compare-box old">
+            <h3>🔴 Without AgentReady</h3>
+            <pre>&lt;div class="wrapper"&gt;
+  &lt;nav class="mega-menu"&gt;
+    &lt;ul&gt;&lt;li&gt;&lt;a&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a&gt;About&lt;/a&gt;&lt;/li&gt;...
+  &lt;/ul&gt;&lt;/nav&gt;
+  &lt;div class="cookie-banner"&gt;
+    We use cookies...Accept | Decline
+  &lt;/div&gt;
+  &lt;div class="hero-slider owl-carousel"&gt;
+    &lt;div class="slide js-animate"&gt;...
+  &lt;/div&gt;
+  &lt;aside class="sidebar widget-area"&gt;
+    &lt;div class="ad-block"&gt;...&lt;/div&gt;
+    &lt;div class="social-share"&gt;...&lt;/div&gt;
+  &lt;/aside&gt;
+  &lt;div class="listing-card"&gt;
+    &lt;span class="price"&gt;€475,000&lt;/span&gt;
+    &lt;!-- the actual content is buried
+         under 200+ DOM nodes --&gt;
+  &lt;/div&gt;
+  &lt;script src="analytics.js"&gt;&lt;/script&gt;
+  &lt;script src="chat-widget.js"&gt;&lt;/script&gt;
+  &lt;script src="tracker.js"&gt;&lt;/script&gt;
+&lt;/div&gt;</pre>
+        </div>
+
+        <div class="compare-vs">VS</div>
+
+        <div class="compare-box new">
+            <h3>🟢 With AgentReady</h3>
+            <pre>---
+title: 3-Bedroom House in Amsterdam
+description: Charming family home near Vondelpark
+metadata:
+  price: €475,000
+  bedrooms: 3
+  bathrooms: 1
+  size: 120m²
+  year_built: 1925
+  energy_label: C
+---
+
+# 3-Bedroom House in Amsterdam
+
+> Charming family home near Vondelpark
+> with private garden and recent renovation.
+
+## Property Details
+
+Spacious 120m² home featuring hardwood
+floors, high ceilings, and a modern
+open kitchen. Located on a quiet street
+just 5 minutes from Vondelpark.
+
+## Features
+
+- Private garden (45m²)
+- Roof terrace
+- New central heating (2024)
+- Original period details preserved</pre>
+        </div>
+    </div>
+</section>
+
+<!-- ━━ HOW IT WORKS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section centered" id="how-it-works">
+    <h2>How It Works</h2>
+    <p>AgentReady sits between your existing site and AI crawlers. No redesign needed — it intercepts agent requests and serves optimized content.</p>
+
+    <div class="arch-diagram">
+                    ┌─────────────────┐
+                    │  <span class="or">AI Agent</span>         │
+                    │  GPTBot / Claude │
+                    │  / PerplexityBot │
+                    └────────┬────────┘
+                             │
+                     request with bot UA
+                     or ?agentready=1
+                             │
+                    ┌────────▼────────┐
+                    │  <span class="hl">AgentReady</span>       │
+                    │  ┌────────────┐ │
+                    │  │ <span class="gr">Detector</span>   │ │  ← identifies AI agents
+                    │  │ <span class="gr">Extractor</span>  │ │  ← strips DOM to clean content
+                    │  │ <span class="gr">Schema</span>     │ │  ← adds JSON-LD structured data
+                    │  │ <span class="gr">llms.txt</span>   │ │  ← site overview for LLMs
+                    │  └────────────┘ │
+                    └────────┬────────┘
+                             │
+              choice of: markdown / JSON / llms.txt
+                             │
+               ┌─────────────┼─────────────┐
+               ▼             ▼             ▼
+        ┌────────────┐ ┌──────────┐ ┌────────────┐
+        │ <span class="gr">Markdown</span>    │ │ <span class="gr">JSON-LD</span>   │ │ <span class="gr">llms.txt</span>   │
+        │ Clean text  │ │ Schema.org│ │ Site index  │
+        │ + metadata  │ │ Rich data │ │ for LLMs    │
+        └────────────┘ └──────────┘ └────────────┘</div>
+
+    <div class="steps" style="margin-top: 48px;">
+        <div class="step">
+            <h3>Detect</h3>
+            <p>Recognizes 40+ AI crawlers by user-agent. Auto-refreshes the list from community sources every 24 hours, with a bundled fallback.</p>
+        </div>
+        <div class="step">
+            <h3>Extract</h3>
+            <p>Strips navigation, ads, scripts, cookie banners, and visual clutter. Pulls out the actual content, metadata, images, and links.</p>
+        </div>
+        <div class="step">
+            <h3>Structure</h3>
+            <p>Wraps content in Schema.org JSON-LD and clean markdown with YAML frontmatter. Agents get machine-perfect data without guessing.</p>
+        </div>
+        <div class="step">
+            <h3>Serve</h3>
+            <p>Routes agent requests to optimized endpoints. Human visitors see your normal site — agents see the clean version. Zero visual impact.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ━━ FEATURES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section">
+    <h2>Features</h2>
+    <p>Everything you need to make your site the preferred source for AI-powered discovery.</p>
+
+    <div class="features">
+        <div class="card">
+            <div class="card-icon">🔍</div>
+            <h3>AI Agent Detection</h3>
+            <p>Identifies 40+ AI bots including GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bingbot, and more. Automatically refreshes from Dark Visitors API and community lists with a local bundled fallback.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📄</div>
+            <h3>llms.txt Support</h3>
+            <p>Generates standards-compliant <code>llms.txt</code> and <code>llms-full.txt</code> files — the AI equivalent of robots.txt. Gives LLMs a complete site overview in seconds without crawling every page.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🏗️</div>
+            <h3>Schema.org JSON-LD</h3>
+            <p>Auto-generates rich structured data: WebPage, RealEstateListing, Organization, BreadcrumbList, and FAQPage. Supports @graph merging for complex multi-type pages.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">✂️</div>
+            <h3>Content Extraction</h3>
+            <p>Strips the DOM down to actual content. Removes nav, footer, ads, scripts, cookie notices, social widgets, and tracking pixels. Returns clean, readable markdown.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔗</div>
+            <h3>Dual Format Endpoints</h3>
+            <p>Add <code>?agentready=1</code> to any URL for markdown, or <code>?agentready=json</code> for structured JSON. Also responds to <code>Accept: text/markdown</code> headers automatically.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🏠</div>
+            <h3>Real Estate Ready</h3>
+            <p>Built-in support for real estate listing schemas with price, bedrooms, bathrooms, floor size, amenities, GPS coordinates, energy labels, and more — out of the box.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">🔄</div>
+            <h3>Auto-Updating Agent List</h3>
+            <p>Fetches the latest AI crawler list from remote sources (Dark Visitors, ai-robots-txt), caches for 24 hours, and falls back gracefully through bundled JSON to a hardcoded minimum.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">⚡</div>
+            <h3>Zero Dependencies</h3>
+            <p>Pure PHP 7.4+. No frameworks, no Composer packages, no npm builds. Works with WordPress, Laravel, static PHP, or any stack that runs PHP. Just drop it in.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">📡</div>
+            <h3>Content Feed</h3>
+            <p>Serves a JSON feed of all pages at <code>/agentready-feed.json</code> — an AI-native sitemap. Agents can discover and index your entire site efficiently from a single endpoint.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ━━ KNOWN AGENTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section">
+    <h2>40+ AI Agents Recognized</h2>
+    <p>Automatically detects these crawlers and serves them optimized content. The list updates itself from community sources.</p>
+
+    <div class="agent-grid">
+        <div class="agent-tag"><span class="agent-dot ai"></span>GPTBot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>ChatGPT-User</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>ClaudeBot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>Claude-Web</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>PerplexityBot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>Google-Extended</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>Googlebot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>Applebot-Extended</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>Meta-ExternalAgent</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>Amazonbot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>Bytespider</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>OAI-SearchBot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>cohere-ai</div>
+        <div class="agent-tag"><span class="agent-dot scraper"></span>Diffbot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>FacebookBot</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>YouBot</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>PhindBot</div>
+        <div class="agent-tag"><span class="agent-dot scraper"></span>FirecrawlBot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>JinaBot</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>Bingbot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>PetalBot</div>
+        <div class="agent-tag"><span class="agent-dot search"></span>iaskspider</div>
+        <div class="agent-tag"><span class="agent-dot scraper"></span>CCBot</div>
+        <div class="agent-tag"><span class="agent-dot ai"></span>WebPilot</div>
+    </div>
+
+    <p style="margin-top: 20px; font-size: 13px; color: var(--color-text-dim);">
+        <span class="agent-dot ai" style="display:inline-block; width:8px; height:8px; border-radius:50; vertical-align: middle;"></span> AI Crawler &nbsp;
+        <span class="agent-dot search" style="display:inline-block; width:8px; height:8px; border-radius:50%; vertical-align: middle;"></span> AI Search &nbsp;
+        <span class="agent-dot scraper" style="display:inline-block; width:8px; height:8px; border-radius:50%; vertical-align: middle;"></span> Data Scraper
+        — list auto-updates every 24h from remote sources
+    </p>
+</section>
+
+<!-- ━━ CODE EXAMPLE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section">
+    <h2>Drop-In Integration</h2>
+    <p>Add AgentReady to any PHP site in under 5 minutes. Works with WordPress, plain PHP, or any framework.</p>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span>WordPress — functions.php</span>
+        </div>
+        <pre><span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/Config.php'</span>;
+<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/AgentDetector.php'</span>;
+<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/AgentList.php'</span>;
+<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/ContentExtractor.php'</span>;
+<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/StructuredData.php'</span>;
+<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/LlmsTxt.php'</span>;
+
+<span class="cmt">// Load config</span>
+<span class="kw">$config</span> = Config::<span class="fn">fromFile</span>(__DIR__ . <span class="str">'/agentready/config.json'</span>);
+
+<span class="cmt">// Detect AI agents & serve clean content</span>
+<span class="kw">$detector</span> = <span class="kw">new</span> <span class="fn">AgentDetector</span>(<span class="kw">$config</span>);
+
+<span class="kw">if</span> (<span class="kw">$detector</span>-><span class="fn">isAgent</span>() || <span class="kw">$detector</span>-><span class="fn">isAgentRequest</span>()) {
+    <span class="kw">$extractor</span> = <span class="kw">new</span> <span class="fn">ContentExtractor</span>(<span class="kw">$config</span>);
+    <span class="kw">$html</span> = <span class="fn">ob_get_clean</span>();
+    <span class="kw">$data</span> = <span class="kw">$extractor</span>-><span class="fn">extract</span>(<span class="kw">$html</span>);
+
+    <span class="cmt">// Serve as markdown or JSON based on request</span>
+    <span class="kw">$format</span> = <span class="kw">$detector</span>-><span class="fn">getRequestedFormat</span>();
+
+    <span class="kw">if</span> (<span class="kw">$format</span> === <span class="str">'json'</span>) {
+        <span class="fn">header</span>(<span class="str">'Content-Type: application/json'</span>);
+        <span class="kw">echo</span> <span class="fn">json_encode</span>(<span class="kw">$extractor</span>-><span class="fn">toJson</span>(<span class="kw">$data</span>));
+    } <span class="kw">else</span> {
+        <span class="fn">header</span>(<span class="str">'Content-Type: text/markdown'</span>);
+        <span class="kw">echo</span> <span class="kw">$extractor</span>-><span class="fn">toMarkdown</span>(<span class="kw">$data</span>);
+    }
+    <span class="kw">exit</span>;
+}</pre>
+    </div>
+
+    <div class="code-block" style="margin-top: 20px;">
+        <div class="code-header">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span>llms.txt endpoint</span>
+        </div>
+        <pre><span class="cmt">// Serve at /llms.txt — the AI equivalent of robots.txt</span>
+<span class="kw">$llms</span> = <span class="kw">new</span> <span class="fn">LlmsTxt</span>(<span class="kw">$config</span>);
+<span class="kw">echo</span> <span class="kw">$llms</span>-><span class="fn">generate</span>([
+    [<span class="str">'title'</span> => <span class="str">'Listings'</span>,  <span class="str">'url'</span> => <span class="str">'/listings'</span>,  <span class="str">'description'</span> => <span class="str">'Browse all properties'</span>],
+    [<span class="str">'title'</span> => <span class="str">'Sell'</span>,      <span class="str">'url'</span> => <span class="str">'/sell'</span>,      <span class="str">'description'</span> => <span class="str">'List your property'</span>],
+    [<span class="str">'title'</span> => <span class="str">'About Us'</span>,  <span class="str">'url'</span> => <span class="str">'/about'</span>,     <span class="str">'description'</span> => <span class="str">'Our team and mission'</span>],
+]);
+
+<span class="cmt">// Output example:
+// # My Real Estate Site
+// &gt; Find your dream home in the Netherlands.
+//
+// ## Topics
+// - Real estate listings
+// - Property search
+//
+// ## For AI Agents
+// - Add ?agentready=1 to any page for clean markdown
+// - Content feed: /agentready-feed.json</span></pre>
+    </div>
+</section>
+
+<!-- ━━ BENEFITS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section centered">
+    <h2>Why AgentReady?</h2>
+    <p>SEO was about making Google find your pages. AEO (Agent Engine Optimization) is about making AI agents <em>understand and recommend</em> your content.</p>
+
+    <div class="benefits" style="text-align: left;">
+        <div class="benefit">
+            <h3>🏆 Be The Recommended Result</h3>
+            <p>When an AI agent searches 50 property sites, the ones serving structured, clean data get ranked highest. AgentReady ensures your listings are easy to parse, compare, and recommend.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>⚡ 10x Faster Agent Crawling</h3>
+            <p>Instead of downloading 500KB of HTML, CSS, and JavaScript per page, agents get a 5KB markdown file with all the essential data. Faster crawls = more pages indexed = better coverage.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>🎯 Zero Data Loss</h3>
+            <p>AI agents often miss critical details buried in complex DOM structures. AgentReady extracts price, specs, features, and description into clearly labeled fields — nothing falls through the cracks.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>📋 Standards-Based</h3>
+            <p>Built on proven standards: Schema.org JSON-LD, the llms.txt proposal, and markdown — formats that every major AI system already understands. No proprietary lock-in.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>🔒 No Impact on Human Users</h3>
+            <p>Your website looks and works exactly the same for regular visitors. AgentReady only activates when an AI crawler is detected — completely invisible to humans.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>🔌 Universal Compatibility</h3>
+            <p>Works with WordPress, static PHP sites, Laravel, Symfony, or any PHP stack. Zero external dependencies. Requires only PHP 7.4+ with the DOM extension (included in 99% of PHP installs).</p>
+        </div>
+
+        <div class="benefit">
+            <h3>🌐 Future-Proof</h3>
+            <p>The agent list auto-updates from Dark Visitors and community sources. As new AI crawlers emerge, AgentReady recognizes them automatically — you don't need to update your code.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>🏠 Industry-Specific Schemas</h3>
+            <p>Pre-built structured data generators for real estate (RealEstateListing), organizations, breadcrumbs, and FAQs. Easily extensible for any industry vertical.</p>
+        </div>
+
+        <div class="benefit">
+            <h3>📊 Agent Analytics Ready</h3>
+            <p>Identifies exactly which AI vendor (OpenAI, Anthropic, Google, Meta, etc.) and category (AI crawler, AI search, AI assistant) is accessing your site. Know who's reading your content.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ━━ THE FUTURE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section centered">
+    <h2>The Future of Web Discovery</h2>
+    <p style="max-width: 720px; margin-left: auto; margin-right: auto;">
+        Traditional SEO optimized for search engines showing blue links. But users are shifting to AI-powered discovery:
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; text-align: left;">
+        <div class="card">
+            <h3 style="color: var(--color-text-dim);">Yesterday</h3>
+            <p><em>"3 bedroom house amsterdam"</em></p>
+            <p style="margin-top: 8px;">User types query → clicks 10 blue links → opens each site → reads through bloated pages → compares manually → makes decision</p>
+            <p style="margin-top: 12px; color: var(--color-red); font-size: 13px; font-weight: 600;">⏱ 45 minutes of browsing</p>
+        </div>
+
+        <div class="card" style="border-color: var(--color-green);">
+            <h3 style="color: var(--color-green);">Tomorrow</h3>
+            <p><em>"Find me a 3-bedroom house in Amsterdam under €500k, near a park, with a garden"</em></p>
+            <p style="margin-top: 8px;">User tells agent → agent crawls 50 sites in seconds → reads clean structured data → compares specs → presents top 5 matches with full details</p>
+            <p style="margin-top: 12px; color: var(--color-green); font-size: 13px; font-weight: 600;">⏱ 10 seconds, better results</p>
+        </div>
+    </div>
+
+    <p style="margin-top: 40px; max-width: 680px; margin-left: auto; margin-right: auto; color: var(--color-text-dim);">
+        Sites that serve clean, structured, agent-optimized content will be the ones that get crawled, understood, and recommended. <strong style="color: var(--color-text);">AgentReady makes your site ready for this shift today.</strong>
+    </p>
+</section>
+
+<!-- ━━ WHAT'S INCLUDED ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section">
+    <h2>What's In The Box</h2>
+    <p>Six modular PHP classes, a bundled agent database, and a JSON config file. That's it — no build step required.</p>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span>Project Structure</span>
+        </div>
+        <pre>agentready/
+├── src/
+│   ├── <span class="fn">Config.php</span>            <span class="cmt"># JSON config loader with dot-notation access</span>
+│   ├── <span class="fn">AgentDetector.php</span>     <span class="cmt"># Detects AI bots from UA / Accept / query param</span>
+│   ├── <span class="fn">AgentList.php</span>         <span class="cmt"># Remote-fetching agent list with cache + fallback</span>
+│   ├── <span class="fn">ContentExtractor.php</span>  <span class="cmt"># HTML → clean markdown / structured JSON</span>
+│   ├── <span class="fn">StructuredData.php</span>    <span class="cmt"># Schema.org JSON-LD generator</span>
+│   └── <span class="fn">LlmsTxt.php</span>          <span class="cmt"># llms.txt / llms-full.txt generator</span>
+├── data/
+│   └── <span class="fn">known-agents.json</span>    <span class="cmt"># Bundled database of 40+ AI crawlers</span>
+├── <span class="fn">config.example.json</span>       <span class="cmt"># Example configuration</span>
+└── <span class="fn">composer.json</span>             <span class="cmt"># PSR-4 autoloading</span></pre>
+    </div>
+</section>
+
+<!-- ━━ FOOTER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<footer>
+    <p>
+        <strong>AgentReady</strong> — Open source AEO toolkit by <a href="#">Reddstone</a><br>
+        <span style="font-size: 12px; margin-top: 4px; display: inline-block;">
+            Standards: <a href="https://schema.org">Schema.org</a> · <a href="https://llmstxt.org">llms.txt</a> · <a href="https://darkvisitors.com">Dark Visitors</a> · <a href="https://github.com/ai-robots-txt/ai.robots.txt">ai-robots-txt</a>
+        </span>
+    </p>
+</footer>
+
+</body>
+</html>
