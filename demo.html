@@ -369,6 +369,58 @@
         .code-block .cmt { color: #555570; }
         .code-block .fn { color: #f39c12; }
 
+        /* ── Tabs ──────────────────────────────────────── */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 24px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px 8px 0 0;
+            color: var(--color-text-dim);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            border-bottom: none;
+        }
+
+        .tab:hover { color: var(--color-text); }
+
+        .tab.active {
+            background: var(--color-surface-2);
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+            border-bottom: 2px solid var(--color-surface-2);
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── WP Feature Row ────────────────────────────── */
+        .wp-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .wp-feat {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .wp-feat .icon { font-size: 28px; margin-bottom: 8px; }
+        .wp-feat h4 { font-size: 0.92rem; margin-bottom: 4px; }
+        .wp-feat p { font-size: 0.82rem; color: var(--color-text-dim); }
+
         /* ── Benefits grid ────────────────────────────── */
         .benefits {
             display: grid;
@@ -450,7 +502,10 @@
     <p class="hero-sub">
         AgentReady is a drop-in PHP toolkit that makes your website optimally readable for AI crawlers and autonomous agents — so when users ask their AI assistant to find a product, property, or service, <strong>your site gets recommended first</strong>.
     </p>
-    <a href="#how-it-works" class="hero-cta">See How It Works ↓</a>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="#how-it-works" class="hero-cta">See How It Works ↓</a>
+        <a href="#wordpress" class="hero-cta" style="background: transparent; border: 1px solid var(--color-accent);">WordPress Plugin →</a>
+    </div>
 </section>
 
 <!-- ━━ THE PROBLEM ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
@@ -639,7 +694,13 @@ just 5 minutes from Vondelpark.
         <div class="card">
             <div class="card-icon">⚡</div>
             <h3>Zero Dependencies</h3>
-            <p>Pure PHP 7.4+. No frameworks, no Composer packages, no npm builds. Works with WordPress, Laravel, static PHP, or any stack that runs PHP. Just drop it in.</p>
+            <p>Pure PHP 7.4+. No frameworks, no Composer packages, no npm builds. Single <code>require</code> autoloader, or activate the WordPress plugin and write zero code.</p>
+        </div>
+
+        <div class="card" style="border-color: rgba(0, 210, 160, 0.3);">
+            <div class="card-icon" style="background: var(--color-green-glow);">🔌</div>
+            <h3>WordPress Plugin</h3>
+            <p>Activate and go. Auto-configures from WP settings, registers /llms.txt routes, injects JSON-LD into &lt;head&gt;, adds REST API endpoints, and provides an admin settings page.</p>
         </div>
 
         <div class="card">
@@ -690,35 +751,585 @@ just 5 minutes from Vondelpark.
     </p>
 </section>
 
-<!-- ━━ CODE EXAMPLE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-<section class="section">
-    <h2>Drop-In Integration</h2>
-    <p>Add AgentReady to any PHP site in under 5 minutes. Works with WordPress, plain PHP, or any framework.</p>
+<!-- ━━ WORDPRESS INTEGRATION ━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section centered" id="wordpress">
+    <h2>First-Class WordPress Support</h2>
+    <p>Drop the plugin folder into <code>wp-content/plugins/</code>, activate, and you're done. Auto-detects all content, metadata, and SEO plugins. Full admin dashboard with analytics.</p>
 
-    <div class="code-block">
-        <div class="code-header">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span>WordPress — functions.php</span>
+    <div class="steps" style="margin-top: 36px;">
+        <div class="step">
+            <h3>Upload</h3>
+            <p>Copy the <code>agentready</code> folder to <code>wp-content/plugins/</code></p>
         </div>
-        <pre><span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/Config.php'</span>;
-<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/AgentDetector.php'</span>;
-<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/AgentList.php'</span>;
-<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/ContentExtractor.php'</span>;
-<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/StructuredData.php'</span>;
-<span class="kw">require_once</span> __DIR__ . <span class="str">'/agentready/src/LlmsTxt.php'</span>;
+        <div class="step">
+            <h3>Activate</h3>
+            <p>Go to Plugins → Activate AgentReady. Everything auto-configures from your WP settings.</p>
+        </div>
+        <div class="step">
+            <h3>Monitor</h3>
+            <p>See which AI agents crawl your site in the built-in analytics dashboard.</p>
+        </div>
+    </div>
+
+    <div class="wp-features">
+        <div class="wp-feat">
+            <div class="icon">🔄</div>
+            <h4>Auto-Detection</h4>
+            <p>Auto-detects content, metadata, ACF fields, Yoast, RankMath, and WooCommerce — zero config required</p>
+        </div>
+        <div class="wp-feat">
+            <div class="icon">📊</div>
+            <h4>Analytics Dashboard</h4>
+            <p>See total crawls, vendor breakdown, daily charts, top pages, and a full crawl log in wp-admin</p>
+        </div>
+        <div class="wp-feat">
+            <div class="icon">📋</div>
+            <h4>Page Management</h4>
+            <p>Toggle pages on/off, see crawl stats per page, and manage auto vs manual mode for each page</p>
+        </div>
+        <div class="wp-feat">
+            <div class="icon">✏️</div>
+            <h4>Per-Page Overrides</h4>
+            <p>Meta box in the post editor lets you override title, description, content, and metadata per page</p>
+        </div>
+        <div class="wp-feat">
+            <div class="icon">🤖</div>
+            <h4>Crawl Logging</h4>
+            <p>Every AI agent visit logged to JSON with agent name, vendor, page, format, and response size</p>
+        </div>
+        <div class="wp-feat">
+            <div class="icon">🧠</div>
+            <h4>40+ AI Agents</h4>
+            <p>Detects GPTBot, Claude, Perplexity, Google, Meta, and 35+ more. Auto-updates from remote sources</p>
+        </div>
+    </div>
+
+    <p style="margin-top: 32px;"><a href="#wp-admin" class="hero-cta" style="font-size: 14px; padding: 12px 28px;">See Admin Dashboard ↓</a></p>
+</section>
+
+<!-- ━━ WP ADMIN SHOWCASE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section centered" id="wp-admin">
+    <h2>Built-In Admin Dashboard</h2>
+    <p>Full analytics, page management, and per-page control — right inside your WordPress admin. No external tools needed.</p>
+
+    <style>
+        .wp-mock { background: #f0f0f1; border-radius: var(--radius); overflow: hidden; margin-top: 32px; text-align: left; border: 1px solid var(--color-border); }
+        .wp-mock-bar { background: #1d2327; padding: 8px 16px; display: flex; align-items: center; gap: 12px; }
+        .wp-mock-bar .wdots { display: flex; gap: 6px; }
+        .wp-mock-bar .wdot { width: 10px; height: 10px; border-radius: 50%; }
+        .wp-mock-bar .wdot:nth-child(1) { background: #ff5f57; }
+        .wp-mock-bar .wdot:nth-child(2) { background: #ffbd2e; }
+        .wp-mock-bar .wdot:nth-child(3) { background: #28ca41; }
+        .wp-mock-bar .wurl { flex: 1; background: #32343c; border-radius: 4px; padding: 4px 12px; font-size: 11px; color: #999; font-family: var(--font-mono); }
+        .wp-mock-body { display: grid; grid-template-columns: 180px 1fr; min-height: 600px; }
+        .wp-mock-sidebar { background: #1d2327; padding: 16px 0; }
+        .wp-mock-sidebar .wp-menu-item { padding: 8px 16px; font-size: 12px; color: #a7aaad; cursor: default; }
+        .wp-mock-sidebar .wp-menu-item:hover { color: #fff; }
+        .wp-mock-sidebar .wp-menu-item.active { background: #2271b1; color: #fff; font-weight: 600; }
+        .wp-mock-sidebar .wp-menu-sub { padding: 4px 0 4px 28px; font-size: 11px; color: #a7aaad; }
+        .wp-mock-sidebar .wp-menu-sub.active { color: #72aee6; }
+        .wp-mock-content { padding: 20px; background: #f0f0f1; overflow-x: auto; }
+        .wp-mock-content h1 { font-size: 20px; color: #1d2327; margin-bottom: 16px; }
+
+        /* Dashboard mock */
+        .wm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+        .wm-stat { background: #fff; border: 1px solid #c3c4c7; border-radius: 6px; padding: 14px; text-align: center; }
+        .wm-stat-num { font-size: 28px; font-weight: 700; color: #1d2327; }
+        .wm-stat-label { font-size: 11px; color: #646970; margin-top: 2px; }
+        .wm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .wm-panel { background: #fff; border: 1px solid #c3c4c7; border-radius: 6px; padding: 14px; }
+        .wm-panel h3 { font-size: 12px; color: #1d2327; margin: 0 0 10px; }
+        .wm-chart { display: flex; align-items: flex-end; gap: 2px; height: 70px; }
+        .wm-bar { flex: 1; border-radius: 2px 2px 0 0; min-height: 3px; }
+        .wm-bar.b1 { background: #2271b1; }
+        .wm-bar.b2 { background: #72aee6; }
+        .wm-vendor-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f0f0f1; font-size: 11px; color: #1d2327; }
+        .wm-vendor-bar { height: 4px; background: #2271b1; border-radius: 2px; margin-top: 2px; }
+        .wm-table { width: 100%; border-collapse: collapse; font-size: 11px; color: #1d2327; }
+        .wm-table th { text-align: left; padding: 5px 6px; color: #646970; font-weight: 600; border-bottom: 1px solid #c3c4c7; }
+        .wm-table td { padding: 5px 6px; border-bottom: 1px solid #f0f0f1; }
+        .wm-badge { display: inline-block; padding: 1px 6px; border-radius: 100px; font-size: 10px; font-weight: 500; }
+        .wm-badge-blue { background: #e6f0f7; color: #2271b1; }
+        .wm-badge-green { background: #e6f7ee; color: #0a6629; }
+        .wm-badge-orange { background: #fef3e2; color: #9a6700; }
+
+        /* Pages mock */
+        .wm-toggle { width: 28px; height: 16px; border-radius: 8px; background: #2271b1; position: relative; display: inline-block; }
+        .wm-toggle::after { content: ''; position: absolute; right: 2px; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+        .wm-toggle.off { background: #c3c4c7; }
+        .wm-toggle.off::after { right: auto; left: 2px; }
+
+        /* Meta box mock */
+        .wm-metabox { background: #fff; border: 1px solid #c3c4c7; border-radius: 0; margin-top: 16px; }
+        .wm-metabox-header { padding: 8px 12px; border-bottom: 1px solid #c3c4c7; font-size: 12px; font-weight: 600; color: #1d2327; background: #fff; cursor: default; }
+        .wm-metabox-body { padding: 12px; font-size: 11px; color: #1d2327; }
+        .wm-metabox-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: #f0f6fc; border: 1px solid #c3d5e6; border-radius: 4px; margin-bottom: 10px; }
+        .wm-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; padding: 6px; background: #f6f7f7; border-radius: 3px; font-size: 10px; margin-bottom: 10px; }
+        .wm-meta-key { color: #666; }
+        .wm-meta-val { color: #1d2327; }
+        .wm-input { width: 100%; padding: 4px 6px; border: 1px solid #8c8f94; border-radius: 3px; font-size: 11px; background: #fff; color: #1d2327; }
+
+        .wp-screens { margin-top: 24px; }
+        .wp-screen-tabs { display: flex; gap: 4px; margin-bottom: 0; }
+        .wp-screen-tab { padding: 10px 20px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px 8px 0 0; border-bottom: none; font-size: 13px; color: var(--color-text-dim); cursor: pointer; transition: all 0.15s; }
+        .wp-screen-tab:hover { color: var(--color-text); }
+        .wp-screen-tab.active { background: var(--color-surface-2); color: var(--color-accent); border-color: var(--color-accent); }
+        .wp-screen-panel { display: none; }
+        .wp-screen-panel.active { display: block; }
+    </style>
+
+    <div class="wp-screens">
+        <div class="wp-screen-tabs">
+            <div class="wp-screen-tab active" onclick="switchWpScreen(event, 'wps-dashboard')">Dashboard</div>
+            <div class="wp-screen-tab" onclick="switchWpScreen(event, 'wps-pages')">Page Management</div>
+            <div class="wp-screen-tab" onclick="switchWpScreen(event, 'wps-analytics')">Analytics</div>
+            <div class="wp-screen-tab" onclick="switchWpScreen(event, 'wps-metabox')">Per-Page Meta Box</div>
+        </div>
+
+        <!-- ── Dashboard Screen ──────────────────────── -->
+        <div id="wps-dashboard" class="wp-screen-panel active">
+            <div class="wp-mock">
+                <div class="wp-mock-bar">
+                    <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+                    <div class="wurl">yoursite.com/wp-admin/admin.php?page=agentready</div>
+                </div>
+                <div class="wp-mock-body">
+                    <div class="wp-mock-sidebar">
+                        <div class="wp-menu-item">Dashboard</div>
+                        <div class="wp-menu-item">Posts</div>
+                        <div class="wp-menu-item">Pages</div>
+                        <div class="wp-menu-item active">🤖 AgentReady</div>
+                        <div class="wp-menu-sub active">Dashboard</div>
+                        <div class="wp-menu-sub">Pages</div>
+                        <div class="wp-menu-sub">Analytics</div>
+                        <div class="wp-menu-sub">Settings</div>
+                        <div class="wp-menu-item">Settings</div>
+                    </div>
+                    <div class="wp-mock-content">
+                        <h1>🤖 AgentReady Dashboard</h1>
+                        <div class="wm-stats">
+                            <div class="wm-stat"><div class="wm-stat-num">2,847</div><div class="wm-stat-label">Total AI Crawls</div></div>
+                            <div class="wm-stat"><div class="wm-stat-num">12</div><div class="wm-stat-label">Unique Agents</div></div>
+                            <div class="wm-stat"><div class="wm-stat-num">38</div><div class="wm-stat-label">Pages Crawled</div></div>
+                            <div class="wm-stat"><div class="wm-stat-num">6</div><div class="wm-stat-label">AI Vendors</div></div>
+                        </div>
+                        <div class="wm-grid">
+                            <div class="wm-panel">
+                                <h3>📈 Crawls — Last 14 Days</h3>
+                                <div class="wm-chart">
+                                    <div class="wm-bar b1" style="height: 30%"></div>
+                                    <div class="wm-bar b2" style="height: 45%"></div>
+                                    <div class="wm-bar b1" style="height: 55%"></div>
+                                    <div class="wm-bar b2" style="height: 40%"></div>
+                                    <div class="wm-bar b1" style="height: 80%"></div>
+                                    <div class="wm-bar b2" style="height: 65%"></div>
+                                    <div class="wm-bar b1" style="height: 70%"></div>
+                                    <div class="wm-bar b2" style="height: 90%"></div>
+                                    <div class="wm-bar b1" style="height: 60%"></div>
+                                    <div class="wm-bar b2" style="height: 100%"></div>
+                                    <div class="wm-bar b1" style="height: 75%"></div>
+                                    <div class="wm-bar b2" style="height: 85%"></div>
+                                    <div class="wm-bar b1" style="height: 50%"></div>
+                                    <div class="wm-bar b2" style="height: 95%"></div>
+                                </div>
+                            </div>
+                            <div class="wm-panel">
+                                <h3>🏢 Crawls by AI Vendor</h3>
+                                <div class="wm-vendor-row"><span>OpenAI</span><strong>892</strong></div>
+                                <div><div class="wm-vendor-bar" style="width: 100%"></div></div>
+                                <div class="wm-vendor-row"><span>Anthropic</span><strong>631</strong></div>
+                                <div><div class="wm-vendor-bar" style="width: 71%"></div></div>
+                                <div class="wm-vendor-row"><span>Google</span><strong>584</strong></div>
+                                <div><div class="wm-vendor-bar" style="width: 65%"></div></div>
+                                <div class="wm-vendor-row"><span>Perplexity</span><strong>412</strong></div>
+                                <div><div class="wm-vendor-bar" style="width: 46%"></div></div>
+                                <div class="wm-vendor-row"><span>Meta</span><strong>201</strong></div>
+                                <div><div class="wm-vendor-bar" style="width: 23%"></div></div>
+                            </div>
+                        </div>
+                        <div class="wm-grid">
+                            <div class="wm-panel">
+                                <h3>🏆 Most Crawled Pages</h3>
+                                <table class="wm-table">
+                                    <thead><tr><th>Page</th><th>Crawls</th><th>Agents</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Amsterdam Penthouse</td><td><strong>342</strong></td><td>GPTBot, Claude</td></tr>
+                                        <tr><td>Listings Overview</td><td><strong>281</strong></td><td>GoogleOther, GPTBot</td></tr>
+                                        <tr><td>Utrecht Family Home</td><td><strong>196</strong></td><td>PerplexityBot</td></tr>
+                                        <tr><td>Contact</td><td><strong>87</strong></td><td>CCBot, Claude</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="wm-panel">
+                                <h3>🕐 Recent Crawls</h3>
+                                <table class="wm-table">
+                                    <thead><tr><th>Time</th><th>Agent</th><th>Page</th><th>Format</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Jun 8 14:21</td><td><span class="wm-badge wm-badge-blue">GPTBot</span></td><td>Amsterdam Penthouse</td><td><span class="wm-badge wm-badge-green">markdown</span></td></tr>
+                                        <tr><td>Jun 8 14:18</td><td><span class="wm-badge wm-badge-blue">Claude-Web</span></td><td>Listings Overview</td><td><span class="wm-badge wm-badge-green">json</span></td></tr>
+                                        <tr><td>Jun 8 13:55</td><td><span class="wm-badge wm-badge-blue">PerplexityBot</span></td><td>Utrecht Family Home</td><td><span class="wm-badge wm-badge-green">markdown</span></td></tr>
+                                        <tr><td>Jun 8 13:40</td><td><span class="wm-badge wm-badge-blue">GoogleOther</span></td><td>Homepage</td><td><span class="wm-badge wm-badge-green">json</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Pages Screen ──────────────────────────── -->
+        <div id="wps-pages" class="wp-screen-panel">
+            <div class="wp-mock">
+                <div class="wp-mock-bar">
+                    <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+                    <div class="wurl">yoursite.com/wp-admin/admin.php?page=agentready-pages</div>
+                </div>
+                <div class="wp-mock-body">
+                    <div class="wp-mock-sidebar">
+                        <div class="wp-menu-item">Dashboard</div>
+                        <div class="wp-menu-item">Posts</div>
+                        <div class="wp-menu-item">Pages</div>
+                        <div class="wp-menu-item active">🤖 AgentReady</div>
+                        <div class="wp-menu-sub">Dashboard</div>
+                        <div class="wp-menu-sub active">Pages</div>
+                        <div class="wp-menu-sub">Analytics</div>
+                        <div class="wp-menu-sub">Settings</div>
+                        <div class="wp-menu-item">Settings</div>
+                    </div>
+                    <div class="wp-mock-content">
+                        <h1>🤖 AgentReady — Page Management</h1>
+                        <p style="font-size: 12px; color: #646970; margin-bottom: 12px;">Control which pages serve AI-optimized content. Toggle pages on/off and review auto-detected metadata.</p>
+                        <table class="wm-table" style="background: #fff; border-radius: 6px; overflow: hidden;">
+                            <thead style="background: #f6f7f7;">
+                                <tr><th style="width: 34px;">Active</th><th>Page</th><th>Type</th><th>Mode</th><th>Crawls</th><th>Agents</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="wm-toggle"></div></td>
+                                    <td><strong>Amsterdam Penthouse — €1.2M</strong><br><span style="color: #999; font-size: 10px;">yoursite.com/listings/amsterdam-penthouse</span></td>
+                                    <td><span class="wm-badge wm-badge-blue">post</span></td>
+                                    <td><span class="wm-badge wm-badge-green">🔄 Auto</span></td>
+                                    <td><strong>342</strong></td>
+                                    <td style="font-size: 10px; color: #646970;">GPTBot, Claude-Web</td>
+                                    <td><span class="wm-badge wm-badge-blue" style="cursor: default;">Preview</span></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="wm-toggle"></div></td>
+                                    <td><strong>Utrecht Family Home</strong><br><span style="color: #999; font-size: 10px;">yoursite.com/listings/utrecht-family-home</span></td>
+                                    <td><span class="wm-badge wm-badge-blue">post</span></td>
+                                    <td><span class="wm-badge wm-badge-orange">✏️ Manual</span></td>
+                                    <td><strong>196</strong></td>
+                                    <td style="font-size: 10px; color: #646970;">PerplexityBot</td>
+                                    <td><span class="wm-badge wm-badge-blue" style="cursor: default;">Preview</span> <span class="wm-badge" style="background: #fee; color: #a00; cursor: default;">Reset</span></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="wm-toggle"></div></td>
+                                    <td><strong>About Our Agency</strong><br><span style="color: #999; font-size: 10px;">yoursite.com/about</span></td>
+                                    <td><span class="wm-badge wm-badge-blue">page</span></td>
+                                    <td><span class="wm-badge wm-badge-green">🔄 Auto</span></td>
+                                    <td><strong>87</strong></td>
+                                    <td style="font-size: 10px; color: #646970;">CCBot</td>
+                                    <td><span class="wm-badge wm-badge-blue" style="cursor: default;">Preview</span></td>
+                                </tr>
+                                <tr>
+                                    <td><div class="wm-toggle off"></div></td>
+                                    <td><strong style="color: #999;">Privacy Policy</strong><br><span style="color: #ccc; font-size: 10px;">yoursite.com/privacy-policy</span></td>
+                                    <td><span class="wm-badge wm-badge-blue">page</span></td>
+                                    <td><span style="font-size: 10px; color: #999;">⛔ Disabled</span></td>
+                                    <td><strong>0</strong></td>
+                                    <td>—</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="wm-toggle"></div></td>
+                                    <td><strong>Contact</strong><br><span style="color: #999; font-size: 10px;">yoursite.com/contact</span></td>
+                                    <td><span class="wm-badge wm-badge-blue">page</span></td>
+                                    <td><span class="wm-badge wm-badge-green">🔄 Auto</span></td>
+                                    <td><strong>42</strong></td>
+                                    <td style="font-size: 10px; color: #646970;">GPTBot</td>
+                                    <td><span class="wm-badge wm-badge-blue" style="cursor: default;">Preview</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Analytics Screen ──────────────────────── -->
+        <div id="wps-analytics" class="wp-screen-panel">
+            <div class="wp-mock">
+                <div class="wp-mock-bar">
+                    <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+                    <div class="wurl">yoursite.com/wp-admin/admin.php?page=agentready-analytics</div>
+                </div>
+                <div class="wp-mock-body">
+                    <div class="wp-mock-sidebar">
+                        <div class="wp-menu-item">Dashboard</div>
+                        <div class="wp-menu-item">Posts</div>
+                        <div class="wp-menu-item">Pages</div>
+                        <div class="wp-menu-item active">🤖 AgentReady</div>
+                        <div class="wp-menu-sub">Dashboard</div>
+                        <div class="wp-menu-sub">Pages</div>
+                        <div class="wp-menu-sub active">Analytics</div>
+                        <div class="wp-menu-sub">Settings</div>
+                        <div class="wp-menu-item">Settings</div>
+                    </div>
+                    <div class="wp-mock-content">
+                        <h1>🤖 AgentReady — Analytics</h1>
+                        <p style="font-size: 12px; color: #646970; margin-bottom: 12px;">Detailed analytics of how AI agents interact with your site.</p>
+                        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div class="wm-panel">
+                                <h3>📈 Daily Crawls — Last 30 Days</h3>
+                                <div class="wm-chart" style="height: 100px;">
+                                    <div class="wm-bar b1" style="height: 20%"></div><div class="wm-bar b2" style="height: 25%"></div>
+                                    <div class="wm-bar b1" style="height: 30%"></div><div class="wm-bar b2" style="height: 35%"></div>
+                                    <div class="wm-bar b1" style="height: 28%"></div><div class="wm-bar b2" style="height: 40%"></div>
+                                    <div class="wm-bar b1" style="height: 50%"></div><div class="wm-bar b2" style="height: 45%"></div>
+                                    <div class="wm-bar b1" style="height: 55%"></div><div class="wm-bar b2" style="height: 60%"></div>
+                                    <div class="wm-bar b1" style="height: 48%"></div><div class="wm-bar b2" style="height: 65%"></div>
+                                    <div class="wm-bar b1" style="height: 70%"></div><div class="wm-bar b2" style="height: 58%"></div>
+                                    <div class="wm-bar b1" style="height: 75%"></div><div class="wm-bar b2" style="height: 80%"></div>
+                                    <div class="wm-bar b1" style="height: 68%"></div><div class="wm-bar b2" style="height: 85%"></div>
+                                    <div class="wm-bar b1" style="height: 90%"></div><div class="wm-bar b2" style="height: 78%"></div>
+                                    <div class="wm-bar b1" style="height: 95%"></div><div class="wm-bar b2" style="height: 88%"></div>
+                                    <div class="wm-bar b1" style="height: 82%"></div><div class="wm-bar b2" style="height: 100%"></div>
+                                    <div class="wm-bar b1" style="height: 75%"></div><div class="wm-bar b2" style="height: 92%"></div>
+                                    <div class="wm-bar b1" style="height: 88%"></div><div class="wm-bar b2" style="height: 95%"></div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 10px; color: #999; margin-top: 4px;">
+                                    <span>May 9</span><span>Jun 8</span>
+                                </div>
+                            </div>
+                            <div class="wm-panel">
+                                <h3>🏢 By Vendor</h3>
+                                <div style="text-align: center; margin: 8px 0;">
+                                    <div style="width: 100px; height: 100px; border-radius: 50%; margin: 0 auto; background: conic-gradient(#2271b1 0% 31%, #00a32a 31% 53%, #dba617 53% 74%, #d63638 74% 88%, #8c5ddb 88% 100%); position: relative;">
+                                        <span style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 16px; font-weight: 700; color: #1d2327;">2,847</span>
+                                    </div>
+                                </div>
+                                <div style="font-size: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 4px; padding: 2px 0;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2271b1;"></span> OpenAI <strong style="margin-left: auto;">892</strong></div>
+                                    <div style="display: flex; align-items: center; gap: 4px; padding: 2px 0;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #00a32a;"></span> Anthropic <strong style="margin-left: auto;">631</strong></div>
+                                    <div style="display: flex; align-items: center; gap: 4px; padding: 2px 0;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #dba617;"></span> Google <strong style="margin-left: auto;">584</strong></div>
+                                    <div style="display: flex; align-items: center; gap: 4px; padding: 2px 0;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #d63638;"></span> Perplexity <strong style="margin-left: auto;">412</strong></div>
+                                    <div style="display: flex; align-items: center; gap: 4px; padding: 2px 0;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #8c5ddb;"></span> Meta <strong style="margin-left: auto;">328</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                            <div class="wm-panel">
+                                <h3>🤖 By Agent</h3>
+                                <table class="wm-table">
+                                    <thead><tr><th>Agent</th><th>Crawls</th><th>Share</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><strong>GPTBot</strong></td><td>734</td><td>25.8%</td></tr>
+                                        <tr><td><strong>Claude-Web</strong></td><td>631</td><td>22.2%</td></tr>
+                                        <tr><td><strong>GoogleOther</strong></td><td>584</td><td>20.5%</td></tr>
+                                        <tr><td><strong>PerplexityBot</strong></td><td>412</td><td>14.5%</td></tr>
+                                        <tr><td><strong>Meta-ExternalAgent</strong></td><td>328</td><td>11.5%</td></tr>
+                                        <tr><td><strong>ChatGPT-User</strong></td><td>158</td><td>5.5%</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="wm-panel">
+                                <h3>📦 Format Requested</h3>
+                                <div style="font-size: 12px; margin-top: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 6px; padding: 4px 0;">
+                                        <span class="wm-badge wm-badge-orange">markdown</span> <strong style="margin-left: auto;">1,842</strong>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 6px; padding: 4px 0;">
+                                        <span class="wm-badge wm-badge-green">json</span> <strong style="margin-left: auto;">1,005</strong>
+                                    </div>
+                                </div>
+                                <h3 style="margin-top: 14px;">🏆 Top Crawled Pages</h3>
+                                <div style="margin-bottom: 6px;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 10px;"><span>Amsterdam Penthouse</span><strong>342</strong></div>
+                                    <div style="height: 3px; background: #f0f0f1; border-radius: 2px; margin-top: 2px;"><div style="height: 100%; width: 100%; background: #2271b1; border-radius: 2px;"></div></div>
+                                </div>
+                                <div style="margin-bottom: 6px;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 10px;"><span>Listings Overview</span><strong>281</strong></div>
+                                    <div style="height: 3px; background: #f0f0f1; border-radius: 2px; margin-top: 2px;"><div style="height: 100%; width: 82%; background: #2271b1; border-radius: 2px;"></div></div>
+                                </div>
+                                <div style="margin-bottom: 6px;">
+                                    <div style="display: flex; justify-content: space-between; font-size: 10px;"><span>Utrecht Family Home</span><strong>196</strong></div>
+                                    <div style="height: 3px; background: #f0f0f1; border-radius: 2px; margin-top: 2px;"><div style="height: 100%; width: 57%; background: #2271b1; border-radius: 2px;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wm-panel">
+                            <h3>📋 Crawl Log — Last 30 Days</h3>
+                            <div style="max-height: 140px; overflow-y: auto;">
+                                <table class="wm-table">
+                                    <thead><tr><th>Timestamp</th><th>Agent</th><th>Vendor</th><th>Page</th><th>Format</th><th>Size</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>2025-06-08 14:21</td><td><span class="wm-badge wm-badge-blue">GPTBot</span></td><td>OpenAI</td><td>Amsterdam Penthouse</td><td><span class="wm-badge wm-badge-green">markdown</span></td><td>4.2 KB</td></tr>
+                                        <tr><td>2025-06-08 14:18</td><td><span class="wm-badge wm-badge-blue">Claude-Web</span></td><td>Anthropic</td><td>Listings Overview</td><td><span class="wm-badge wm-badge-green">json</span></td><td>12.8 KB</td></tr>
+                                        <tr><td>2025-06-08 13:55</td><td><span class="wm-badge wm-badge-blue">PerplexityBot</span></td><td>Perplexity</td><td>Utrecht Family Home</td><td><span class="wm-badge wm-badge-green">markdown</span></td><td>3.1 KB</td></tr>
+                                        <tr><td>2025-06-08 13:40</td><td><span class="wm-badge wm-badge-blue">GoogleOther</span></td><td>Google</td><td>Homepage</td><td><span class="wm-badge wm-badge-green">json</span></td><td>8.5 KB</td></tr>
+                                        <tr><td>2025-06-08 12:15</td><td><span class="wm-badge wm-badge-blue">Meta-ExternalAgent</span></td><td>Meta</td><td>About Our Agency</td><td><span class="wm-badge wm-badge-green">markdown</span></td><td>2.4 KB</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Meta Box Screen ───────────────────────── -->
+        <div id="wps-metabox" class="wp-screen-panel">
+            <div class="wp-mock">
+                <div class="wp-mock-bar">
+                    <div class="wdots"><div class="wdot"></div><div class="wdot"></div><div class="wdot"></div></div>
+                    <div class="wurl">yoursite.com/wp-admin/post.php?post=42&action=edit</div>
+                </div>
+                <div class="wp-mock-body">
+                    <div class="wp-mock-sidebar">
+                        <div class="wp-menu-item">Dashboard</div>
+                        <div class="wp-menu-item active">Posts</div>
+                        <div class="wp-menu-item">Pages</div>
+                        <div class="wp-menu-item">🤖 AgentReady</div>
+                        <div class="wp-menu-item">Settings</div>
+                    </div>
+                    <div class="wp-mock-content" style="background: #f0f0f1;">
+                        <h1 style="margin-bottom: 8px;">Edit Post: Amsterdam Penthouse</h1>
+                        <div style="background: #fff; border: 1px solid #c3c4c7; padding: 12px; border-radius: 4px; margin-bottom: 12px;">
+                            <div style="font-size: 18px; color: #1d2327; font-weight: 400; padding: 6px; border: 1px solid transparent;">Amsterdam Penthouse — Canal District — €1,200,000</div>
+                        </div>
+                        <div style="background: #fff; border: 1px solid #c3c4c7; padding: 12px; border-radius: 4px; margin-bottom: 12px; font-size: 12px; color: #646970;">
+                            <em>Content editor area...</em>
+                        </div>
+
+                        <div class="wm-metabox">
+                            <div class="wm-metabox-header">🤖 AgentReady — AI Agent Content</div>
+                            <div class="wm-metabox-body">
+                                <div class="wm-metabox-toggle">
+                                    <input type="checkbox" checked style="margin: 0;"> <strong>Enable AgentReady for this page</strong>
+                                    <span class="wm-badge wm-badge-green" style="margin-left: 6px;">✅ Auto-detected</span>
+                                </div>
+
+                                <div style="border: 1px solid #ddd; border-radius: 4px; padding: 10px; margin-bottom: 10px;">
+                                    <div style="font-weight: 600; margin-bottom: 6px; font-size: 12px;">Auto-Detected Metadata <small style="color: #999;">(from WP, ACF, Yoast, WooCommerce)</small></div>
+                                    <div class="wm-meta-grid">
+                                        <div class="wm-meta-key">post_type</div><div class="wm-meta-val">post</div>
+                                        <div class="wm-meta-key">published</div><div class="wm-meta-val">2025-05-15T10:30:00+02:00</div>
+                                        <div class="wm-meta-key">author</div><div class="wm-meta-val">Jan de Vries</div>
+                                        <div class="wm-meta-key">featured_image</div><div class="wm-meta-val">cdn.site.com/penthouse-hero.jpg</div>
+                                        <div class="wm-meta-key">categories</div><div class="wm-meta-val">Apartments, Amsterdam</div>
+                                        <div class="wm-meta-key">seo_title</div><div class="wm-meta-val">Amsterdam Penthouse | Canal District</div>
+                                        <div class="wm-meta-key">seo_description</div><div class="wm-meta-val">Stunning 3-bedroom penthouse with...</div>
+                                        <div class="wm-meta-key">acf_price</div><div class="wm-meta-val">€1,200,000</div>
+                                        <div class="wm-meta-key">acf_bedrooms</div><div class="wm-meta-val">3</div>
+                                        <div class="wm-meta-key">acf_living_area</div><div class="wm-meta-val">185 m²</div>
+                                        <div class="wm-meta-key">acf_garden</div><div class="wm-meta-val">Rooftop terrace</div>
+                                    </div>
+                                </div>
+
+                                <div style="border: 1px solid #ddd; border-radius: 4px; padding: 10px;">
+                                    <div style="font-weight: 600; margin-bottom: 8px; font-size: 12px;">Override AI Content <small style="color: #999;">(leave empty to use auto-detected values)</small></div>
+                                    <div style="margin-bottom: 6px;">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;">Title</div>
+                                        <input class="wm-input" placeholder="Amsterdam Penthouse — Canal District — €1,200,000" value="">
+                                    </div>
+                                    <div style="margin-bottom: 6px;">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;">Description</div>
+                                        <input class="wm-input" placeholder="Stunning 3-bedroom penthouse with panoramic canal views..." value="">
+                                    </div>
+                                    <div style="margin-bottom: 6px;">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;">Custom Content (Markdown)</div>
+                                        <textarea class="wm-input" rows="2" style="font-family: monospace; font-size: 10px;" placeholder="Leave empty to auto-extract from page HTML"></textarea>
+                                    </div>
+                                    <div style="margin-bottom: 6px;">
+                                        <div style="font-weight: 600; font-size: 11px; margin-bottom: 2px;">Extra Metadata (JSON)</div>
+                                        <textarea class="wm-input" rows="2" style="font-family: monospace; font-size: 10px;" placeholder='{"price": "€1,200,000", "bedrooms": 3}'></textarea>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 8px;">
+                                    <span class="wm-badge wm-badge-blue" style="padding: 3px 10px; cursor: default;">Preview as Markdown</span>
+                                    <span class="wm-badge wm-badge-blue" style="padding: 3px 10px; cursor: default;">Preview as JSON</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function switchWpScreen(e, panelId) {
+        document.querySelectorAll('.wp-screen-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.wp-screen-panel').forEach(p => p.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        document.getElementById(panelId).classList.add('active');
+    }
+    </script>
+</section>
+
+<!-- ━━ CODE EXAMPLES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section">
+    <h2>Integration Options</h2>
+    <p>One-line autoloader for any PHP project, or a full WordPress plugin with zero-config setup.</p>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(event, 'tab-wp')">WordPress Plugin</div>
+        <div class="tab" onclick="switchTab(event, 'tab-php')">Any PHP Site</div>
+        <div class="tab" onclick="switchTab(event, 'tab-llms')">llms.txt</div>
+    </div>
+
+    <div id="tab-wp" class="tab-panel active">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <span>That's it. Activate and go.</span>
+            </div>
+            <pre><span class="cmt">// WordPress: just activate the plugin. Everything is automatic.</span>
+<span class="cmt">//</span>
+<span class="cmt">// What happens behind the scenes:</span>
+<span class="cmt">//</span>
+<span class="cmt">// ✓ AI agents detected by user-agent → served clean markdown/JSON</span>
+<span class="cmt">// ✓ /llms.txt and /llms-full.txt registered as URL rewrites</span>
+<span class="cmt">// ✓ JSON-LD structured data injected into &lt;head&gt; on every page</span>
+<span class="cmt">// ✓ REST API endpoints at /wp-json/agentready/v1/feed</span>
+<span class="cmt">// ✓ Site name, URL, language pulled from WordPress settings</span>
+<span class="cmt">// ✓ Settings page at Settings → AgentReady</span>
+<span class="cmt">//</span>
+<span class="cmt">// Want to customize? Go to Settings → AgentReady and edit the config.</span>
+<span class="cmt">// Need to test? Visit any of these:</span>
+
+yoursite.com<span class="str">/llms.txt</span>                    <span class="cmt"># Site overview for LLMs</span>
+yoursite.com<span class="str">/llms-full.txt</span>               <span class="cmt"># Full content dump</span>
+yoursite.com<span class="str">/?agentready=1</span>               <span class="cmt"># Any page as clean markdown</span>
+yoursite.com<span class="str">/?agentready=json</span>            <span class="cmt"># Any page as structured JSON</span>
+yoursite.com<span class="str">/wp-json/agentready/v1/feed</span>  <span class="cmt"># Content feed (REST API)</span>
+yoursite.com<span class="str">/wp-json/agentready/v1/page?id=42</span> <span class="cmt"># Single page via REST</span></pre>
+        </div>
+    </div>
+
+    <div id="tab-php" class="tab-panel">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <span>Any PHP site — one require</span>
+            </div>
+            <pre><span class="cmt">// One line loads everything — no more require_once per file</span>
+<span class="kw">require_once</span> <span class="str">'path/to/agentready/autoload.php'</span>;
+
+<span class="kw">use</span> AgentReady\Config;
+<span class="kw">use</span> AgentReady\AgentDetector;
+<span class="kw">use</span> AgentReady\ContentExtractor;
 
 <span class="cmt">// Load config</span>
-<span class="kw">$config</span> = Config::<span class="fn">fromFile</span>(__DIR__ . <span class="str">'/agentready/config.json'</span>);
-
-<span class="cmt">// Detect AI agents & serve clean content</span>
+<span class="kw">$config</span> = Config::<span class="fn">fromFile</span>(__DIR__ . <span class="str">'/config.json'</span>);
 <span class="kw">$detector</span> = <span class="kw">new</span> <span class="fn">AgentDetector</span>(<span class="kw">$config</span>);
 
+<span class="cmt">// Intercept AI agent requests</span>
 <span class="kw">if</span> (<span class="kw">$detector</span>-><span class="fn">isAgent</span>() || <span class="kw">$detector</span>-><span class="fn">isAgentRequest</span>()) {
     <span class="kw">$extractor</span> = <span class="kw">new</span> <span class="fn">ContentExtractor</span>(<span class="kw">$config</span>);
-    <span class="kw">$html</span> = <span class="fn">ob_get_clean</span>();
     <span class="kw">$data</span> = <span class="kw">$extractor</span>-><span class="fn">extract</span>(<span class="kw">$html</span>);
-
-    <span class="cmt">// Serve as markdown or JSON based on request</span>
     <span class="kw">$format</span> = <span class="kw">$detector</span>-><span class="fn">getRequestedFormat</span>();
 
     <span class="kw">if</span> (<span class="kw">$format</span> === <span class="str">'json'</span>) {
@@ -730,34 +1341,48 @@ just 5 minutes from Vondelpark.
     }
     <span class="kw">exit</span>;
 }</pre>
+        </div>
     </div>
 
-    <div class="code-block" style="margin-top: 20px;">
-        <div class="code-header">
-            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-            <span>llms.txt endpoint</span>
-        </div>
-        <pre><span class="cmt">// Serve at /llms.txt — the AI equivalent of robots.txt</span>
-<span class="kw">$llms</span> = <span class="kw">new</span> <span class="fn">LlmsTxt</span>(<span class="kw">$config</span>);
+    <div id="tab-llms" class="tab-panel">
+        <div class="code-block">
+            <div class="code-header">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                <span>llms.txt endpoint — works in both WP and plain PHP</span>
+            </div>
+            <pre><span class="kw">require_once</span> <span class="str">'path/to/agentready/autoload.php'</span>;
+
+<span class="kw">use</span> AgentReady\{Config, LlmsTxt};
+
+<span class="kw">$config</span> = Config::<span class="fn">fromFile</span>(<span class="str">'config.json'</span>);
+<span class="kw">$llms</span>   = <span class="kw">new</span> <span class="fn">LlmsTxt</span>(<span class="kw">$config</span>);
+
 <span class="kw">echo</span> <span class="kw">$llms</span>-><span class="fn">generate</span>([
     [<span class="str">'title'</span> => <span class="str">'Listings'</span>,  <span class="str">'url'</span> => <span class="str">'/listings'</span>,  <span class="str">'description'</span> => <span class="str">'Browse all properties'</span>],
     [<span class="str">'title'</span> => <span class="str">'Sell'</span>,      <span class="str">'url'</span> => <span class="str">'/sell'</span>,      <span class="str">'description'</span> => <span class="str">'List your property'</span>],
     [<span class="str">'title'</span> => <span class="str">'About Us'</span>,  <span class="str">'url'</span> => <span class="str">'/about'</span>,     <span class="str">'description'</span> => <span class="str">'Our team and mission'</span>],
 ]);
 
-<span class="cmt">// Output example:
+<span class="cmt">// Output:
 // # My Real Estate Site
-// &gt; Find your dream home in the Netherlands.
-//
-// ## Topics
-// - Real estate listings
-// - Property search
+// > Find your dream home in the Netherlands.
 //
 // ## For AI Agents
 // - Add ?agentready=1 to any page for clean markdown
-// - Content feed: /agentready-feed.json</span></pre>
+// - Content feed: /agentready-feed.json
+// - This file: /llms.txt</span></pre>
+        </div>
     </div>
 </section>
+
+<script>
+function switchTab(e, panelId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    document.getElementById(panelId).classList.add('active');
+}
+</script>
 
 <!-- ━━ BENEFITS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 <section class="section centered">
@@ -843,7 +1468,7 @@ just 5 minutes from Vondelpark.
 <!-- ━━ WHAT'S INCLUDED ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 <section class="section">
     <h2>What's In The Box</h2>
-    <p>Six modular PHP classes, a bundled agent database, and a JSON config file. That's it — no build step required.</p>
+    <p>Six modular PHP classes, a single-file autoloader, a WordPress plugin, and a bundled agent database. No build step required.</p>
 
     <div class="code-block">
         <div class="code-header">
@@ -860,8 +1485,10 @@ just 5 minutes from Vondelpark.
 │   └── <span class="fn">LlmsTxt.php</span>          <span class="cmt"># llms.txt / llms-full.txt generator</span>
 ├── data/
 │   └── <span class="fn">known-agents.json</span>    <span class="cmt"># Bundled database of 40+ AI crawlers</span>
+├── <span class="fn">autoload.php</span>              <span class="cmt"># Single require — loads all classes</span>
+├── <span class="fn">agentready-wp.php</span>         <span class="cmt"># WordPress plugin (activate & go)</span>
 ├── <span class="fn">config.example.json</span>       <span class="cmt"># Example configuration</span>
-└── <span class="fn">composer.json</span>             <span class="cmt"># PSR-4 autoloading</span></pre>
+└── <span class="fn">composer.json</span>             <span class="cmt"># PSR-4 autoloading (optional)</span></pre>
     </div>
 </section>
 
